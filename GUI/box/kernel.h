@@ -38,5 +38,6 @@ enum vga_color {
     WHITE,
 };
 
+#include "keyboard.h"
 
 #endif

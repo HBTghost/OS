@@ -239,33 +239,54 @@ void print_ebx(uint32 ebx)
   print_int(init_apic_id);
 }
 
+unsigned long long rdtscl(void)
+{
+    unsigned long lo, hi;
+    __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));                        
+    return ( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );  
+}
 void print_edx(uint32 edx)
 {
-  print_string("\nEDX :-");
-  print_string("\n\tbit-31 [ ");
-  print_binary(edx);
-  print_string(" ] bit-0");
-  print_string("\n\tBit 0 : FPU-x87 FPU on Chip");
-  print_string("\n\tBit 1 : VME-Virtual-8086 Mode Enhancement");
-  print_string("\n\tBit 2 : DE-Debugging Extensions");
-  print_string("\n\tBit 3 : PSE-Page Size Extensions");
-  print_string("\n\tBit 4 : TSC-Time Stamp Counter");
-  print_string("\n\tBit 5 : MSR-RDMSR and WRMSR Support");
-  print_string("\n\tBit 6 : PAE-Physical Address Extensions");
+  // char *bytes = (char*)&edx;
+  uint32 time = edx;
+  time >>= 4;	//bits 4
+  time &= (2 << 0) - 1;
+  print_int(time);
+  // print_string("\n");
+  // print_int(bytes[1]);
+  // print_string("\n");
+  // print_int(bytes[2]);
+  // print_string("\n");
+  // print_int(bytes[3]);
+  // print_string("\n");
+  // print_string("\nEDX :-");
+  // print_string("\n\tbit-31 [ ");
+  // // print_binary(edx);
+  // print_string(" ] bit-0");
+  // print_string("\n\tBit 0 : FPU-x87 FPU on Chip");
+  // print_string("\n\tBit 1 : VME-Virtual-8086 Mode Enhancement");
+  // print_string("\n\tBit 2 : DE-Debugging Extensions");
+  // print_string("\n\tBit 3 : PSE-Page Size Extensions");
+  // print_string("\n\tBit 4 : TSC-Time Stamp Counter");
+  // print_string("\n\tBit 5 : MSR-RDMSR and WRMSR Support");
+  // print_string("\n\tBit 6 : PAE-Physical Address Extensions");
 }
 
 void cpuid_test()
 {
-  uint32 eax, ebx, ecx, edx;
+  // uint32 eax, ebx, ecx, edx;
 
-  print_string("CPUID EAX = 01H");
+  // print_string("CPUID EAX = 01H");
 
   //see cpuid instruction in Intel Manual for more information
-  cpuid(0x01, &eax, &ebx, &ecx, &edx);
-
-  print_eax(eax);
-  print_ebx(ebx);
-  print_edx(edx);
+  // cpuid(0x01, &eax, &ebx, &ecx, &edx);
+  
+  // print_eax(eax);
+  // print_ebx(ebx);
+  // print_edx(edx);
+  // print_binary(eax);
+  // print_binary(ebx);
+  // print_binary(ecx);
 }
 
 void kernel_entry()
@@ -273,7 +294,8 @@ void kernel_entry()
   //first init vga with fore & back colors
   init_vga(WHITE, BLUE);
 
-  cpuid_test();
+  print_int(rdtscl());
+  // cpuid_test();
 }
 
 

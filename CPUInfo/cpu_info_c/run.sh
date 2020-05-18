@@ -16,5 +16,13 @@ cp MyOS.bin isodir/boot/MyOS.bin
 cp grub.cfg isodir/boot/grub/grub.cfg
 grub-mkrescue -o MyOS.iso isodir
 
+# Remove unused file
+
+rm kernel.o
+rm boot.o
+rm MyOS.bin
+
+rm -rf isodir
+
 #run it in qemu
-qemu-system-x86_64 -cdrom MyOS.iso
+# qemu-system-x86_64 -cdrom MyOS.iso
